@@ -1,23 +1,17 @@
-
+using GamesShop.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Domain.Models;
-using BLL.Infastructure;
-using DLL.Context;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
-
-builder.Services.AddDefaultIdentity<User>(option => option.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<GameStoreContext>(); ;
-
-
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-var identityBuilder = builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true);
-Configuration.ConfigurationService(builder.Services, connectionString, identityBuilder);//Config Busines
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

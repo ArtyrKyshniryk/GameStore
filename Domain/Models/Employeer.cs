@@ -15,5 +15,6 @@ namespace Domain.Models
         public string PhoneNumber { get; set; }
         public DateTime StartWorkDate { get; set; }
         public DateTime EndtWorkDate { get; set; }
+        public List<Product> Products { get; set; }
     }
 }
