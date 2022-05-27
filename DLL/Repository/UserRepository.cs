@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DLL.Repository
 {
-    internal class UserRepository : BaseRepository<User>
+    public class UserRepository : BaseRepository<User>
     {
         public UserRepository(GameStoreContext context, DbSet<User> entities) : base(context, entities)
         {

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DLL.Repository
 {
-    internal class EmployeerRepository : BaseRepository<Employeer>
+    public class EmployeerRepository : BaseRepository<Employeer>
     {
         public EmployeerRepository(GameStoreContext context, DbSet<Employeer> entities) : base(context, entities)
         {

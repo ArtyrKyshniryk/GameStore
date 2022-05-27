@@ -4,21 +4,27 @@ using Microsoft.EntityFrameworkCore;
 using Domain.Models;
 using BLL.Infastructure;
 using DLL.Context;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'GameStoreContextConnection' not found.");
+
+builder.Services.AddDbContext<GameStoreContext>(options =>
+    options.UseSqlServer(connectionString));;
+
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<GameStoreContext>(options => options.UseSqlServer(connectionString)); ;
 
 
-builder.Services.AddDefaultIdentity<User>(option => option.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<GameStoreContext>(); ;
-
+var identityBuilder = builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<GameStoreContext>();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-var identityBuilder = builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true);
-Configuration.ConfigurationService(builder.Services, connectionString, identityBuilder);//Config Busines
-builder.Services.AddControllersWithViews();
+Configuration.ConfigurationService(builder.Services, connectionString, identityBuilder); ;//Config Busines
+
+builder.Services.AddControllersWithViews(); ;
 
 var app = builder.Build();
 

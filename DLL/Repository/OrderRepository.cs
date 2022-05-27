@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DLL.Repository
 {
-    internal class OrderRepository : BaseRepository<Order>
+    public class OrderRepository : BaseRepository<Order>
     {
         public OrderRepository(GameStoreContext context, DbSet<Order> entities) : base(context, entities)
         {

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DLL.Repository
 {
-    internal class ProductRepository : BaseRepository<Product>
+    public class ProductRepository : BaseRepository<Product>
     {
         public ProductRepository(GameStoreContext context, DbSet<Product> entities) : base(context, entities)
         {
@@ -23,6 +23,31 @@ namespace DLL.Repository
         public async override Task<IReadOnlyCollection<Product>> GetAllASync()
         {
             return await Entities.Include(p => p.Category).Include(p => p.Employeer).Include(p => p.Photos).Include(p => p.Reviews).ToListAsync().ConfigureAwait(false);
+        }
+
+        public  async  Task AddToOrderAsync(Product product, int orderId)
+        {
+            product.OrderId = orderId;
+            base._context.Entry(product).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            base._context.SaveChanges();
+        }
+        public async Task ChangeProductAsync(Product newProduct, int oldProductId)
+        {
+            var product = base._context.Products.Find(oldProductId);
+            product.Order = newProduct.Order;
+            product.Reviews = newProduct.Reviews;
+            product.Employeer = newProduct.Employeer;
+            product.OrderId = newProduct.OrderId;
+            product.Price = newProduct.Price;
+            product.Category = newProduct.Category;
+            product.CategoryId = newProduct.CategoryId;
+            product.Description = newProduct.Description;
+            base._context.Entry(product).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            base._context.SaveChanges();
+        }
+        public async Task RemoveProductFromOrderAsync(int orderId, int remProductId)
+        {
+            base._context.Orders.Find(orderId).Products.Remove(base._context.Orders.Find(orderId).Products.Where(x => x.Id == remProductId).First());
         }
     }
 }
