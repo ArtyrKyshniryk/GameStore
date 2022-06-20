@@ -5,26 +5,33 @@ using Domain.Models;
 using BLL.Infastructure;
 using DLL.Context;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using GameShop.Services;
+using Serilog;
+using Azure.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'GameStoreContextConnection' not found.");
 
-builder.Services.AddDbContext<GameStoreContext>(options =>
-    options.UseSqlServer(connectionString));;
-
-
-// Add services to the container.
-builder.Services.AddDbContext<GameStoreContext>(options => options.UseSqlServer(connectionString)); ;
+var keyVaultEndpoint = new Uri("https://gameshopvault.vault.azure.net/");
+builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
+var connectionString = builder.Configuration.GetValue(typeof(string), "DefaultConnection").ToString();
 
 
-var identityBuilder = builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<GameStoreContext>();
+builder.Host.UseSerilog((hostingContext, services, configuration) =>
+{
+    configuration.WriteTo.File(builder.Environment.WebRootPath + "/Log.txt");
+});
+
+
+var identityBuilder = builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<GameStoreContext>();
+builder.Services.AddTransient<IEmailSender, SenGridEmailSender>();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-Configuration.ConfigurationService(builder.Services, connectionString, identityBuilder); ;//Config Busines
+Configuration.ConfigurationService(builder.Services, connectionString, identityBuilder); ;//Config Busineskg
 
-builder.Services.AddControllersWithViews(); ;
+builder.Services.AddControllersWithViews();
+builder.Services.AddApplicationInsightsTelemetry();
 
 var app = builder.Build();
 

@@ -10,8 +10,8 @@ namespace BLL.Services.Interfaces
 {
     public interface IEnployeeService
     {
-        Task AddProductAsync(Product product, int employId);
-        Task ChangeProductAsync(Product newProduct, int olDProductId);
-        Task SendProductAsync(Product product);
+        Task<IReadOnlyCollection<Employeer>> GetAllEmployeesAsync();
+        Task<IReadOnlyCollection<Employeer>> FindEmployeeByConditiomAsync(Expression<Func<Employeer, bool>> prediacte);
+        Task<Employeer> GetEmployeeByIdAsync(int employeeId);
     }
 }

@@ -4,6 +4,7 @@ using Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -46,5 +47,13 @@ namespace BLL.Services
         {
             throw new NotImplementedException();
         }
+        public async Task<IReadOnlyCollection<Employeer>> FindEmployeeByConditiomAsync(Expression<Func<Employeer, bool>> prediacte)
+       => await _employeerRepository.FindByConditionAsync(prediacte);
+        public async Task<IReadOnlyCollection<Employeer>> GetAllEmployeesAsync()
+        {
+            return await this._employeerRepository.GetAllASync();
+        }
+        public async Task<Employeer> GetEmployeeByIdAsync(int employeeId)
+        => (await this._employeerRepository.FindByConditionAsync(x => x.Id == employeeId))?.First();
     }
 }

@@ -20,9 +20,10 @@ namespace DLL.Repository
         {
             return await Entities.Include(p => p.Products).Where(predicat).ToListAsync().ConfigureAwait(false);
         }
-        public async override Task<IReadOnlyCollection<Employeer>> GetAllASync()
+        public async override  Task<IReadOnlyCollection<Employeer>> GetAllASync()
         {
             return await Entities.Include(p => p.Products).ToListAsync().ConfigureAwait(false);
         }
+        
     }
 }
