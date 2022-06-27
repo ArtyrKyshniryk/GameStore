@@ -43,10 +43,6 @@ namespace BLL.Services
            await _productRepository.RemoveProductFromOrderAsync(orderId, remProductId);
         }
 
-        public Task SendProductAsync(Product product)
-        {
-            throw new NotImplementedException();
-        }
         public async Task<IReadOnlyCollection<Employeer>> FindEmployeeByConditiomAsync(Expression<Func<Employeer, bool>> prediacte)
        => await _employeerRepository.FindByConditionAsync(prediacte);
         public async Task<IReadOnlyCollection<Employeer>> GetAllEmployeesAsync()
@@ -55,5 +51,10 @@ namespace BLL.Services
         }
         public async Task<Employeer> GetEmployeeByIdAsync(int employeeId)
         => (await this._employeerRepository.FindByConditionAsync(x => x.Id == employeeId))?.First();
+
+        public async Task AddEmployeer(Employeer employeer)
+        {
+            await _employeerRepository.CreateAsync(employeer);
+        }
     }
 }

@@ -31,12 +31,12 @@ namespace DLL.Repository.Interfaces
             try
             {
                 await Entities.AddAsync(entity).ConfigureAwait(false);
-                return new OperationDetails() { Message = "Created", IsComplited = true };
+                return new OperationDetails() { Message = "Created", IsCompleted = true };
             }
             catch(Exception ex)
             {
                 Log.Error(ex, "Fatal exception on creat");
-                return new OperationDetails() { Message = "Failed", IsComplited = false };
+                return new OperationDetails() { Message = "Failed", IsCompleted = false };
             }
         }
     }

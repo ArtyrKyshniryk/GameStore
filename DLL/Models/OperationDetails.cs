@@ -9,6 +9,6 @@ namespace DLL.Models
     public class OperationDetails
     {
         public string Message { get; set; }
-        public bool IsComplited { get; set; }
+        public bool IsCompleted { get; set; }
     }
 }

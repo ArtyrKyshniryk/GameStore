@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var keyVaultEndpoint = new Uri("https://gameshopvault.vault.azure.net/");
 builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
-var connectionString = builder.Configuration.GetValue(typeof(string), "DefaultConnection").ToString();
+var connectionString = builder.Configuration.GetConnectionString("DefConnection");
 
 
 builder.Host.UseSerilog((hostingContext, services, configuration) =>

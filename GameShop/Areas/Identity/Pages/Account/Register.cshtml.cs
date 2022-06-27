@@ -75,6 +75,25 @@ namespace GameShop.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
+            /// 
+            [DataType(DataType.Text)]
+            [Display(Name = "Name")]
+            [Compare("Name", ErrorMessage = "To smal.")]
+            public string Name { get; set; }
+
+
+
+            [DataType(DataType.Text)]
+            [Display(Name = "SurName")]
+            [Compare("SurName", ErrorMessage = "To smal.")]
+            public string SurName { get; set; }
+
+            [DataType(DataType.PhoneNumber)]
+            [Display(Name = "Phone Number")]
+            [Compare("PhoneNumber", ErrorMessage = "To smal.")]
+            public string PhoneNumder { get; set; }
+
+
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
@@ -100,6 +119,7 @@ namespace GameShop.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
 
             
+
         }
 
 
