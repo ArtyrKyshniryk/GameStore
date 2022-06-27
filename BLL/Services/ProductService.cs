@@ -29,6 +29,7 @@ namespace BLL.Services
         {
             var oper = await _productRepository.CreateAsync(product);
             return oper.IsCompleted;
+
         }
         public async Task<IReadOnlyCollection<Product>> GetProductsbyNamesAsync(List<string> Productname)
         {
